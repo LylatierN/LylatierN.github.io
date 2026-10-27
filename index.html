@@ -2,13 +2,33 @@
 layout: default
 title: Home
 ---
-<h1>Hello Jekyll!</h1>
-<p>Welcome to My Blog</p>
 
-<p>Here are my blog posts!</p>
+<div class="hero">
+  <p class="hero-label">Personal Blog</p>
+  <h1>Hi, I'm Lylatier.</h1>
+  <p>Writing about life, adventures, and everything in between. Welcome to my little corner of the internet.</p>
+</div>
 
-<ul>
-    {% for post in site.posts %}
-        <li><a href="{{post.url}}">{{ post.title }}</a></li>
-    {% endfor %}
-</ul>
+<p class="section-heading">Latest Posts</p>
+
+<div class="post-list">
+  {% for post in site.posts %}
+  <a class="post-card" href="{{ post.url }}">
+    <div class="post-card-meta">
+      <span>{{ post.date | date: "%B %-d, %Y" }}</span>
+      {% if post.tags.size > 0 %}
+        <span class="tag">{{ post.tags[0] }}</span>
+      {% endif %}
+    </div>
+    <div class="post-card-title">{{ post.title }}</div>
+    {% if post.excerpt %}
+    <div class="post-card-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</div>
+    {% endif %}
+    <div class="post-card-arrow">Read more →</div>
+  </a>
+  {% else %}
+  <div class="post-card">
+    <div class="post-card-title">No posts yet — coming soon!</div>
+  </div>
+  {% endfor %}
+</div>

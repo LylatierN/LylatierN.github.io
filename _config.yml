@@ -1,1 +1,12 @@
+title: Lylatier
+description: Writing about life, adventures, and everything in between.
+url: "https://lylatier.github.io"
+
 permalink: /:title
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"

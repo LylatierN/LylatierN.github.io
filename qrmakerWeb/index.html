@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>QR Code Generator</h1>
+  </header>
+
+  <main>
+    <section class="panel input-panel">
+      <!-- Input Tabs -->
+      <div class="tabs" role="tablist">
+        <button class="tab active" role="tab" aria-selected="true" data-tab="text">Text / Link</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="wifi">Wi-Fi</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="email">Email</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="phone">Phone</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="sms">SMS</button>
+      </div>
+
+      <!-- Text / Link Tab -->
+      <div class="tab-content active" id="tab-text">
+        <label for="text-input">Text or URL</label>
+        <textarea id="text-input" placeholder="Enter text or paste a URL…" rows="4"></textarea>
+        <div class="hint" id="link-hint" hidden>&#x1F517; Link detected</div>
+      </div>
+
+      <!-- Wi-Fi Tab -->
+      <div class="tab-content" id="tab-wifi">
+        <label for="wifi-ssid">Network Name (SSID)</label>
+        <input type="text" id="wifi-ssid" placeholder="MyNetwork">
+        <label for="wifi-password">Password</label>
+        <input type="password" id="wifi-password" placeholder="(leave blank if open)">
+        <label for="wifi-security">Security</label>
+        <select id="wifi-security">
+          <option value="WPA">WPA/WPA2</option>
+          <option value="WEP">WEP</option>
+          <option value="nopass">None (open)</option>
+        </select>
+        <label class="checkbox-row">
+          <input type="checkbox" id="wifi-hidden"> Hidden network
+        </label>
+      </div>
+
+      <!-- Email Tab -->
+      <div class="tab-content" id="tab-email">
+        <label for="email-to">To</label>
+        <input type="email" id="email-to" placeholder="someone@example.com">
+        <label for="email-subject">Subject</label>
+        <input type="text" id="email-subject" placeholder="Hello">
+        <label for="email-body">Body</label>
+        <textarea id="email-body" rows="3" placeholder="Message…"></textarea>
+      </div>
+
+      <!-- Phone Tab -->
+      <div class="tab-content" id="tab-phone">
+        <label for="phone-number">Phone Number</label>
+        <input type="tel" id="phone-number" placeholder="+1 555 000 0000">
+      </div>
+
+      <!-- SMS Tab -->
+      <div class="tab-content" id="tab-sms">
+        <label for="sms-number">Phone Number</label>
+        <input type="tel" id="sms-number" placeholder="+1 555 000 0000">
+        <label for="sms-body">Message</label>
+        <textarea id="sms-body" rows="3" placeholder="Your message…"></textarea>
+      </div>
+
+      <!-- Options -->
+      <details class="options-section" open>
+        <summary>Options</summary>
+        <div class="options-grid">
+          <div class="option-group">
+            <label for="ec-level">Error Correction</label>
+            <select id="ec-level">
+              <option value="L">L – Low (7%)</option>
+              <option value="M" selected>M – Medium (15%)</option>
+              <option value="Q">Q – Quartile (25%)</option>
+              <option value="H">H – High (30%)</option>
+            </select>
+          </div>
+          <div class="option-group">
+            <label for="qr-size">Size (px)</label>
+            <input type="range" id="qr-size" min="128" max="1024" value="256" step="8">
+            <span id="qr-size-label">256</span>
+          </div>
+          <div class="option-group">
+            <label for="qr-margin">Margin (modules)</label>
+            <input type="range" id="qr-margin" min="0" max="8" value="4" step="1">
+            <span id="qr-margin-label">4</span>
+          </div>
+        </div>
+      </details>
+
+      <!-- Colors -->
+      <details class="colors-section" open>
+        <summary>Colors</summary>
+        <div class="color-row">
+          <div class="color-group">
+            <label>Foreground</label>
+            <div class="color-input-wrap">
+              <input type="color" id="fg-color-picker" value="#000000">
+              <input type="text" id="fg-color-hex" value="#000000" maxlength="7" class="hex-input">
+            </div>
+          </div>
+          <button class="swap-btn" id="swap-colors" title="Swap colors" aria-label="Swap foreground and background">&#x21C4;</button>
+          <div class="color-group">
+            <label>Background</label>
+            <div class="color-input-wrap">
+              <input type="color" id="bg-color-picker" value="#ffffff">
+              <input type="text" id="bg-color-hex" value="#ffffff" maxlength="7" class="hex-input">
+            </div>
+          </div>
+        </div>
+
+        <div class="color-row">
+          <div class="color-group">
+            <label>Corner Eyes (optional)</label>
+            <div class="color-input-wrap">
+              <input type="color" id="eye-color-picker" value="#000000">
+              <input type="text" id="eye-color-hex" value="#000000" maxlength="7" class="hex-input">
+              <label class="checkbox-row">
+                <input type="checkbox" id="eye-color-enabled"> Custom eye color
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="transparent-bg"> Transparent background
+        </label>
+
+        <div class="swatches">
+          <span class="swatch-label">Presets:</span>
+          <button class="swatch" data-fg="#000000" data-bg="#ffffff" title="Black / White" style="background:#000000; border-color:#ccc"></button>
+          <button class="swatch" data-fg="#1a1a2e" data-bg="#e8e8f5" title="Navy" style="background:#1a1a2e"></button>
+          <button class="swatch" data-fg="#1b4332" data-bg="#d8f3dc" title="Forest" style="background:#1b4332"></button>
+          <button class="swatch" data-fg="#6b2d8b" data-bg="#f3e8fb" title="Plum" style="background:#6b2d8b"></button>
+          <button class="swatch" data-fg="#9b2226" data-bg="#fdf0f0" title="Brick" style="background:#9b2226"></button>
+          <button class="reset-btn" id="reset-colors">Reset</button>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel preview-panel">
+      <div class="preview-wrap">
+        <canvas class="qr-canvas-main" aria-label="QR Code preview"></canvas>
+        <div class="placeholder" id="placeholder">
+          <div class="placeholder-icon">&#x1F4F7;</div>
+          <p>Enter text or choose a tab to generate a QR code</p>
+        </div>
+      </div>
+
+      <div class="warnings" id="warnings" hidden></div>
+
+      <div class="qr-info" id="qr-info" hidden></div>
+
+      <div class="download-row">
+        <button class="btn btn-primary" id="btn-download-png" disabled>&#x2B07; Download PNG</button>
+        <button class="btn btn-secondary" id="btn-download-svg" disabled>&#x2B07; Download SVG</button>
+        <button class="btn btn-secondary" id="btn-copy" disabled>&#x1F4CB; Copy Image</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="lib/qrcode.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
