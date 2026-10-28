@@ -79,6 +79,7 @@ main {
   margin: 0 auto;
   align-items: flex-start;
   flex-wrap: wrap;
+  padding-top: 24px;
 }
 
 .panel {
