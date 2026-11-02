@@ -13,7 +13,7 @@ title: Home
 
 <div class="post-list">
   {% for post in site.posts %}
-  <a class="post-card" href="{{ post.url }}">
+  <a class="post-card" href="{{ post.link | default: post.url }}"{% if post.link %} target="_blank" rel="noopener"{% endif %}>
     <div class="post-card-meta">
       <span>{{ post.date | date: "%B %-d, %Y" }}</span>
       {% if post.tags.size > 0 %}
